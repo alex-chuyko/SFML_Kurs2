@@ -32,11 +32,13 @@ class Level//главный класс - уровень
 {
 public:
 	bool LoadFromFile(std::string filename);//возвращает false если не получилось загрузить
-	Object GetObject(std::string name);
+	Object GetObj(std::string name);
 	std::vector<Object> GetObjects(std::string name);//выдаем объект в наш уровень
 	std::vector<Object> GetAllObjects();//выдаем все объекты в наш уровень
 	void Draw(sf::RenderWindow &window);//рисуем в окно
 	sf::Vector2i GetTileSize();//получаем размер тайла
+	void ClearObjects();
+	void ClearLayers();
 
 private:
 	int width, height, tileWidth, tileHeight;//в tmx файле width height в начале,затем размер тайла
@@ -303,7 +305,7 @@ bool Level::LoadFromFile(std::string filename)//двоеточия-обращение к методам кл
 	return true;
 }
 
-Object Level::GetObject(std::string name)
+Object Level::GetObj(std::string name)
 {
 	// только первый объект с заданным именем
 	for (int i = 0; i < objects.size(); i++)
@@ -322,12 +324,20 @@ std::vector<Object> Level::GetObjects(std::string name)
 	return vec;
 }
 
-
 std::vector<Object> Level::GetAllObjects()
 {
 	return objects;
 };
 
+void Level::ClearObjects()
+{
+	objects.clear();
+};
+
+void Level::ClearLayers()
+{
+	layers.clear();
+};
 
 sf::Vector2i Level::GetTileSize()
 {

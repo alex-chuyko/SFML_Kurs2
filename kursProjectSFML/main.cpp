@@ -1,48 +1,141 @@
-#include <SFML/Graphics.hpp>
+#include <SFML\Graphics.hpp>
 #include <iostream>
-//#include "map.h"
+#include <sstream>
+#include "Menu.h"
+
+void main()
+{
+	sf::Font font;
+	font.loadFromFile("neuropol_x.ttf");
+	sf::Text text("", font, 40);
+	text.setColor(sf::Color::White);
+	text.setStyle(sf::Text::Bold);
+
+	sf::RenderWindow window(sf::VideoMode(600, 600), "Impossible Game"); //800 640
+
+
+	Menu menu(window.getSize().x, window.getSize().y);
+
+	while (window.isOpen())
+	{
+		sf::Event event;
+		while (window.pollEvent(event))
+		{
+			switch(event.type)
+			{
+			case sf::Event::KeyReleased:
+				switch (event.key.code)
+				{
+				case sf::Keyboard::Up:
+					menu.MoveUp();
+					break;
+
+				case sf::Keyboard::Down:
+					menu.MoveDown();
+					break;
+
+				case sf::Keyboard::Return:
+					switch (menu.GetPressedItem())
+					{
+					case 0: 
+						break;
+					case 1:
+						break;
+					case 2:
+						window.close();
+						break;
+					}
+					break;
+				}
+				break;
+
+			case sf::Event::Closed:
+				window.close();
+
+				break;
+			}
+		}
+
+		window.clear();
+		menu.draw(window);
+
+		text.setString("My Game");
+		text.setPosition(window.getSize().x - 400, 0);
+		window.draw(text);
+
+		window.display();
+	}
+}
+
+
+
+
+
+
+
+/*#include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
+#include <iostream>
 #include "view.h"
 #include "level.h"
 #include <vector>
 #include <sstream>
+#include <Windows.h>
 
 using namespace sf;
 
 class Kub
 {
-private: float x, y = 0;
+//private: float x, y = 0;
 public:
+	float x, y = 0;
 	std::vector<Object> obj;
-	float w, h, dx, dy, speed = 0;
-	bool onGround, life;
-	int playerDeath;
+	float w, h, dx, dy;
+	bool onGround, life = true;
+	int playerDeath, upDown = 1;
+	Music music;
 	String File;
 	Image image;
 	Texture texture;
 	Sprite sprite;
+	float CurrentFrame = 0;
 
 	Kub(String F, Level &lev,  float X, float Y, float W, float H){
+		
+		music.openFromFile("music/musicLevel1.ogg");
+		music.play();
 		obj = lev.GetAllObjects();
 		playerDeath = 0;
-		dx = 0.15; dy = 0;
+		dx = 0.22; dy = 0;
 		onGround = false;
 		life = true;
 		File = F;
 		w = W; h = H;
 		image.loadFromFile("images/" + File);
+		image.createMaskFromColor(Color(255, 255, 255));
 		texture.loadFromImage(image);
 		sprite.setTexture(texture);
+		sprite.setTextureRect(IntRect(0, 0, 32, 32));
 		x = X; y = Y;
 	}
 
 	void update(float time){
-		control();
+		control(time);
 		x += dx*time;
 		checkCollision(dx, 0);
+		if (!life)
+		{
+			playerDeath++;
+			life = true;
+		}
 		y += dy*time;
-		speed = 0;
 		sprite.setPosition(x, y);
-		if (!onGround) { dy = dy + 0.0013*time; }
+		if (!onGround) {
+			//sprite.setOrigin(w / 2, h / 2);
+			//sprite.rotate(0.5*time);
+			//sprite.setOrigin(0, 0);
+			dy = dy + 0.0028*time* upDown;
+		}
 		onGround = false;
 		checkCollision(0, dy);
 	}
@@ -54,11 +147,11 @@ public:
 		return y;
 	}
 
-	void control(){
-		if ((Keyboard::isKeyPressed(Keyboard::Up)) && onGround){
-			dy = -0.5;
-			//dx = 0.1;
-			onGround = false;
+	void control(float time){
+		if (((Keyboard::isKeyPressed(Keyboard::Up)) || (Keyboard::isKeyPressed(Keyboard::Space))) && onGround){
+			dy = -0.7 * upDown;
+			dx = 0.22;
+			onGround = false; 
 		}
 	}
 
@@ -68,23 +161,42 @@ public:
 			{
 				if (obj[i].name == "solid")
 				{
-					if (Dy > 0) { y = obj[i].rect.top - h; dy = 0; onGround = true; }
-					if (Dy < 0) { y = obj[i].rect.top + obj[i].rect.height; dy = 0; onGround = false; }
-					if (Dx > 0) { x = obj[i].rect.left - w; x = 86; y = 559; playerDeath++; }
+					if ((Dy * upDown) > 0) { y = obj[i].rect.top - h * upDown; dy = 0; onGround = true; }
+					//if ((Dy * upDown) < 0) { y = obj[i].rect.top + obj[i].rect.height; dy = 0; onGround = false; }
+					if (Dx > 0) { x = obj[i].rect.left - w; x = 32; y = 250; life = false; music.stop(); music.play(); upDown = 1; }
 				}
-
-				if (obj[i].name == "death"){
-					x = obj[i].rect.left - w; x = 86; y = 559;
-					playerDeath++;
+				else
+				{
+					if (obj[i].name == "death"){
+						x = obj[i].rect.left - w; x = 32; y = 250;
+						life = false;
+						music.stop();
+						music.play();
+						upDown = 1;
+					}
+					else
+					{
+						/*if (obj[i].name == "finish"){
+							//Level lvl;
+							//lvl.LoadFromFile("test30.tmx");
+							//obj.clear();
+							//obj = lvl.GetAllObjects();
+							//x = obj[i].rect.left - w; x = 32; y = 250;
+							playerDeath = 0;
+							upDown = 1;
+						}
+						else
+						{
+							if (obj[i].name == "down"){
+								upDown *= -1;
+								x = 512; y = 416;
+							}
+						//}
+					}
 				}
-
-				if (obj[i].name == "finish"){
-					x = obj[i].rect.left - w; x = 86; y = 559;
-					playerDeath = 0;
-				}
+				break;
 			}
 	}
-
 
 	FloatRect getRect(){
 		return FloatRect(x, y, w, h);
@@ -94,8 +206,14 @@ public:
 
 int main()
 {
+	//HWND hWnd = GetConsoleWindow();
+	//ShowWindow(hWnd, SW_HIDE);
+
+	int levelNum = 1;
+	String levelFile;
+
 	Level lvl;
-	lvl.LoadFromFile("map.tmx");
+	lvl.LoadFromFile("Levels/level1.tmx");
 
 	Font font;
 	font.loadFromFile("birdman_bold.ttf");
@@ -103,25 +221,19 @@ int main()
 	text.setColor(Color::White);
 	text.setStyle(sf::Text::Bold);
 
-	sf::RenderWindow window(sf::VideoMode(800, 640), "Impossible Game");
-	view.reset(sf::FloatRect(0, 0, 800, 640));
-
-
-	
-
-	Object player = lvl.GetObject("player");
-
+	sf::RenderWindow window(sf::VideoMode(600, 600), "Impossible Game"); //800 640
+	view.reset(sf::FloatRect(0, 0, 600, 600));
 
 	Texture t;
 	t.loadFromFile("images/background.jpg");
 	Sprite background;
 	background.setTexture(t);
+	background.setTextureRect(sf::IntRect(0, 0, 14000, 860));
 	
 
-	Kub k("kub.png", lvl, player.rect.left, player.rect.top, 43, 43);
-
-	
-	
+	Object player = lvl.GetObj("player");
+	Object finish = lvl.GetObj("finish");
+	Kub k("kub.jpg", lvl, player.rect.left, player.rect.top, 32, 32);
 
 	Clock clock;
 
@@ -140,134 +252,63 @@ int main()
 				window.close();
 		}
 
+
+		if (k.x > finish.rect.left){
+			levelNum++;
+			lvl.ClearObjects();
+			lvl.ClearLayers();
+			levelFile = "Levels/level" + std::to_string(levelNum);
+			levelFile += ".tmx";
+			lvl.LoadFromFile(levelFile);
+			player = lvl.GetObj("player");
+			finish = lvl.GetObj("finish");
+			k.x = player.rect.left;
+			k.y = player.rect.top;
+			k.playerDeath = 0;
+			k.upDown = 1;
+			k.obj.clear();
+			k.obj = lvl.GetAllObjects();
+		}
+
+		
+
+		window.draw(k.sprite);
+		lvl.Draw(window);
+		window.display();
+
 		getplayercoordinateforview(k.getplayercoordinateX(), k.getplayercoordinateY());
 		k.update(time);
+		window.draw(k.sprite);
 		window.setView(view);
 		window.clear();
 		window.draw(background);
 		
-		lvl.Draw(window);
-
 		std::ostringstream playerScoreString;
 		playerScoreString << k.playerDeath;
 		text.setString("Attempt " + playerScoreString.str());
-		text.setPosition(view.getCenter().x - 75, view.getCenter().y - 300);
+		text.setPosition(view.getCenter().x - 75, view.getCenter().y - 290);
 		window.draw(text);
 		
-
-		window.draw(k.sprite);
-		window.display();
+		
 	}
 
 	return 0; 
-}
+}*/
 
-
-
-
-
-
-
-
-
-
-
-
-//ASCII art
-
-/*#include <SFML/Graphics.hpp>
-#include <iostream>
-#include <fstream>  
-
-//using namespace sf;
-
-
-int main()
+/*if (!k.life)
 {
-	sf::RenderWindow window(sf::VideoMode(600, 540), "Project");
-
-	sf::Image img;
-	img.loadFromFile("images/and.jpg");
-	
-	int height = 439, width = 604;
-
-	sf::Color cl, cl2,cl3,cl4,cl5,cl6,cl7,cl8, cl9;
-
-
-	for (int i = 0; i < width; ++i)
-		for (int j = 0; j < height; ++j)
-		{
-			cl = img.getPixel(i,j);
-			cl.b = cl.r*0.2125 + cl.b*0.0721 + cl.g*0.7154;
-			cl.g = cl.r*0.2125 + cl.b*0.0721 + cl.g*0.7154;
-			cl.r = cl.b*0.0721 + cl.r*0.2125 + cl.g*0.7154;
-			img.setPixel(i, j, cl);
-		}
-			
-	sf::Texture imag;
-	imag.loadFromImage(img);
-	sf::Sprite imgSpr;
-	imgSpr.setTexture(imag);
-
-	int b = 0;
-
-	std::ofstream fout;
-	fout.open("output.txt");
-	for (int i = 0; i < (height-2); i += 2)
-	{
-		for (int j = 0; j < (width-2); j += 1)
-		{
-			cl = img.getPixel(j, i);
-			cl2 = img.getPixel(j+1, i);
-			cl3 = img.getPixel(j, i+1);
-			cl4 = img.getPixel(j+1, i+1);
-			cl5 = img.getPixel(j + 2, i + 2);
-			cl6 = img.getPixel(j , i + 2);
-			cl7 = img.getPixel(j + 2, i);
-			cl8 = img.getPixel(j + 1, i + 2);
-			cl9 = img.getPixel(j + 2, i + 1);
-			b = ((cl.b + cl.g + cl.r) + (cl2.b + cl2.g + cl2.r) + (cl3.b + cl3.g + cl3.r) + (cl4.b + cl4.g + cl4.r) + (cl5.b + cl5.g + cl5.r) + (cl6.b + cl6.g + cl6.r) + (cl7.b + cl7.g + cl7.r) + (cl8.b + cl8.g + cl8.r) + (cl9.b + cl9.g + cl9.r)) / 81;
-			if (b < 5) fout << "¨";
-			else
-				if (b < 10) fout << "@";
-				else
-					if (b < 15) fout << "Ø";
-					else
-						if (b < 20) fout << "$";
-						else
-							if (b < 25)	fout << "&";
-							else
-								if (b < 30)	fout << "#";
-								else
-									if (b < 35)	fout << "¤";
-									else
-										if (b < 40)	fout << "~";
-										else
-											if (b < 45)	fout << "´";
-											else
-												if (b < 50) fout << ".";
-												else
-													fout << " ";
-		}
-		fout << "\n";
-	}
-	fout.close();
-
-
-
-	while (window.isOpen())
-	{
-		sf::Event event;
-		while (window.pollEvent(event))
-		{
-			if (event.type == sf::Event::Closed)
-				window.close();
-		}
-
-		window.clear();
-		window.draw(imgSpr);
-		window.display();
-	}
-
-	return 0;
+k.playerDeath++;
+k.image.loadFromFile("images/dieAnim.png");
+k.image.createMaskFromColor(Color(255, 255, 255));
+k.texture.loadFromImage(k.image);
+k.sprite.setTexture(k.texture);
+k.dx = 0;
+for (int i = 0; i < 5; i++)
+{
+k.sprite.setTextureRect(IntRect(64 * i, 0, 64, 64));
+window.draw(k.sprite);
+window.display();
+}
+k.life = true;
+k.dx = 0.22;
 }*/
