@@ -64,12 +64,43 @@ float Kub::getplayercoordinateY()
 
 void Kub::control(float time)
 {
-	if (((Keyboard::isKeyPressed(Keyboard::Up)) || (Keyboard::isKeyPressed(Keyboard::Space))) && onGround)
+	if (((Keyboard::isKeyPressed(Keyboard::W)) || (Keyboard::isKeyPressed(Keyboard::Space))) && onGround)
 	{
 		dy = -0.7 * upDown;
 		dx = 0.22;
 		onGround = false;
 	}
+	/*if (Keyboard::isKeyPressed(Keyboard::Escape))
+	{
+		sf::RenderWindow window(sf::VideoMode(300, 300), "Pause", sf::Style::None);
+
+		while (window.isOpen())
+		{
+		sf::Event event;
+		while (window.pollEvent(event))
+		{
+		switch (event.type)
+		{
+		case sf::Event::KeyReleased:
+		switch (event.key.code)
+		{
+		case sf::Keyboard::Escape:
+		window.close();
+		break;
+		}
+		break;
+
+		case sf::Event::Closed:
+		window.close();
+		break;
+		}
+		}
+
+		dx = 0;
+		dy = 0;
+		music.pause();
+		}
+	}*/
 }
 
 void Kub::checkCollision(float Dx, float Dy)
@@ -125,27 +156,36 @@ FloatRect Kub::getRect()
 	return FloatRect(x, y, w, h);
 }
 
-Object Kub::checkFinish(Object player, Object finish, Level &lvl)
+Object Kub::checkFinish(Object player, Object finish, Level &lvl, sf::RenderWindow &window, sf::RenderWindow &windowMenu)
 {
 	String levelFile, musicFile;
 	if (x > finish.rect.left)
 	{
 		levelNum++;
-		lvl.ClearObjects();
-		lvl.ClearLayers();
-		levelFile = "Levels/level" + std::to_string(levelNum);
-		levelFile += ".tmx";
-		lvl.LoadFromFile(levelFile);
-		player = lvl.GetObj("player");
-		finish = lvl.GetObj("finish");
-		musicFile = "music/musicLevel" + std::to_string(levelNum) + ".ogg";
-		music.openFromFile(musicFile);
-		x = player.rect.left;
-		y = player.rect.top;
-		playerDeath = 0;
-		upDown = 1;
-		obj.clear();
-		obj = lvl.GetAllObjects();
+		if (levelNum < 3)
+		{
+			lvl.ClearObjects();
+			lvl.ClearLayers();
+			levelFile = "Levels/level" + std::to_string(levelNum);
+			levelFile += ".tmx";
+			lvl.LoadFromFile(levelFile);
+			player = lvl.GetObj("player");
+			finish = lvl.GetObj("finish");
+			musicFile = "music/musicLevel" + std::to_string(levelNum) + ".ogg";
+			music.openFromFile(musicFile);
+			music.play();
+			x = player.rect.left;
+			y = player.rect.top;
+			playerDeath = 0;
+			upDown = 1;
+			obj.clear();
+			obj = lvl.GetAllObjects();
+		}
+		else
+		{
+			window.close();
+			windowMenu.setVisible(true);
+		}
 	}
 	return finish;
 }

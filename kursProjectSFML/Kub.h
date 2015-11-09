@@ -21,7 +21,7 @@ public:
 	void control(float time);
 	void checkCollision(float Dx, float Dy);
 	FloatRect getRect();
-	Object checkFinish(Object player, Object finish, Level &lvl);
+	Object checkFinish(Object player, Object finish, Level &lvl, sf::RenderWindow &window, sf::RenderWindow &windowMenu);
 	void draw(RenderWindow &window, Level &lvl, Text text, Sprite background, float time);
 
 private:

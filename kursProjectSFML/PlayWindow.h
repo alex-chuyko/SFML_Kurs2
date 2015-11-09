@@ -8,7 +8,7 @@
 //#include <Windows.h>
 #include "Kub.h"
 
-void CreatePlayWindow()
+void CreatePlayWindow(sf::RenderWindow &menuWindow)
 {
 	HWND hWnd = GetConsoleWindow();
 	ShowWindow(hWnd, SW_HIDE);
@@ -19,13 +19,13 @@ void CreatePlayWindow()
 	lvl.LoadFromFile("Levels/level1.tmx");
 
 	Font font;
-	font.loadFromFile("birdman_bold.ttf");
+	font.loadFromFile("akashi.ttf");
 	Text text("", font, 30);
 	text.setColor(Color::White);
 	text.setStyle(sf::Text::Bold);
 
-	sf::RenderWindow window(sf::VideoMode(600, 600), "Impossible Game"); //800 640
-	view.reset(sf::FloatRect(0, 0, 600, 600));
+	sf::RenderWindow window(sf::VideoMode(700, 600), "Impossible Game", sf::Style::Close); //800 640
+	view.reset(sf::FloatRect(0, 0, 700, 600));
 
 	Texture t;
 	t.loadFromFile("images/background.jpg");
@@ -42,7 +42,7 @@ void CreatePlayWindow()
 
 	while (window.isOpen())
 	{
-
+		menuWindow.setVisible(false);
 		float time = clock.getElapsedTime().asMicroseconds();
 		clock.restart();
 		time = time / 800;
@@ -52,10 +52,13 @@ void CreatePlayWindow()
 		while (window.pollEvent(event))
 		{
 			if (event.type == sf::Event::Closed)
+			{
+				menuWindow.setVisible(true);
 				window.close();
+			}
 		}
 
-		finish = k.checkFinish(player, finish, lvl);
+		finish = k.checkFinish(player, finish, lvl, window, menuWindow);
 		float x = k.getplayercoordinateX(); 
 		float y = k.getplayercoordinateY();
 		float tempX = x; float tempY = y;

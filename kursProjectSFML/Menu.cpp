@@ -1,16 +1,17 @@
 #include "Menu.h"
 
 
-Menu::Menu(float width, float heigth)
+Menu::Menu(float width, float heigth, sf::String FileName, int MAX_NUMBER_OF_ITEMS)
 {
-	sf::String FileName;
+	sf::String filePicture;
 	for (int i = 0; i < MAX_NUMBER_OF_ITEMS; i++)
 	{
-		FileName = "images/btn" + std::to_string(i + 1) + ".png";
-		image[i].loadFromFile(FileName);
+		filePicture = FileName;
+		filePicture += std::to_string(i + 1) + ".png";
+		image[i].loadFromFile(filePicture);
 		texture[i].loadFromImage(image[i]);
 		sprite[i].setTexture(texture[i]);
-		sprite[i].setPosition(sf::Vector2f(width - width / 1.5, heigth / (MAX_NUMBER_OF_ITEMS + 1) * (i + 0.5)));
+		sprite[i].setPosition(sf::Vector2f(width - width / 1.5, heigth / (MAX_NUMBER_OF_ITEMS + 1) * (i + 0.8)));
 	}
 	sprite[0].setColor(sf::Color::Red);
 
@@ -22,7 +23,7 @@ Menu::~Menu()
 {
 }
 
-void Menu::draw(sf::RenderWindow &window)
+void Menu::draw(sf::RenderWindow &window, int MAX_NUMBER_OF_ITEMS)
 {
 	for (int i = 0; i < MAX_NUMBER_OF_ITEMS; i++)
 	{
@@ -42,7 +43,7 @@ void Menu::MoveUp()
 	}
 }
 
-void Menu::MoveDown()
+void Menu::MoveDown(int MAX_NUMBER_OF_ITEMS)
 {
 	sf::Color color;
 	if (selectedItemIndex + 1 < MAX_NUMBER_OF_ITEMS)
