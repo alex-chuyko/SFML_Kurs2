@@ -1,20 +1,26 @@
-﻿Сборка начата 07.11.2015 20:50:42.
+﻿Сборка начата 09.11.2015 14:42:00.
      1>Проект "C:\Users\Alex\Documents\Visual Studio 2013\Projects\kursProjectSFML\kursProjectSFML\kursProjectSFML.vcxproj" в узле 2 (целевые объекты Build).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 13.0\VC\bin\CL.exe /c /I"C:\SFML-2.3.2\include" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D SFML_DYNAMICWIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
-         main.cpp
-     1>c:\users\alex\documents\visual studio 2013\projects\kursprojectsfml\kursprojectsfml\main.cpp(17): warning C4244: аргумент: преобразование "unsigned int" в "float", возможна потеря данных
-     1>c:\users\alex\documents\visual studio 2013\projects\kursprojectsfml\kursprojectsfml\main.cpp(63): warning C4244: аргумент: преобразование "unsigned int" в "float", возможна потеря данных
+         C:\Program Files (x86)\Microsoft Visual Studio 13.0\VC\bin\CL.exe /c /I"C:\SFML-2.3.2\include" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D SFML_DYNAMICWIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Kub.cpp
+         Kub.cpp
+     1>c:\users\alex\documents\visual studio 2013\projects\kursprojectsfml\kursprojectsfml\kub.cpp(10): warning C4305: =: усечение из "double" к "float"
+     1>c:\users\alex\documents\visual studio 2013\projects\kursprojectsfml\kursprojectsfml\kub.cpp(49): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+     1>c:\users\alex\documents\visual studio 2013\projects\kursprojectsfml\kursprojectsfml\kub.cpp(69): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+     1>c:\users\alex\documents\visual studio 2013\projects\kursprojectsfml\kursprojectsfml\kub.cpp(70): warning C4305: =: усечение из "double" к "float"
+     1>c:\users\alex\documents\visual studio 2013\projects\kursprojectsfml\kursprojectsfml\kub.cpp(77): warning C4018: <: несоответствие типов со знаком и без знака
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 13.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Alex\Documents\Visual Studio 2013\Projects\kursProjectSFML\Debug\kursProjectSFML.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\SFML-2.3.2\lib" "sfml-graphics-d.lib" "sfml-window-d.lib" "sfml-system-d.lib" "sfml-audio-d.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Alex\Documents\Visual Studio 2013\Projects\kursProjectSFML\Debug\kursProjectSFML.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Alex\Documents\Visual Studio 2013\Projects\kursProjectSFML\Debug\kursProjectSFML.lib" /MACHINE:X86 Debug\main.obj
+         C:\Program Files (x86)\Microsoft Visual Studio 13.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Alex\Documents\Visual Studio 2013\Projects\kursProjectSFML\Debug\kursProjectSFML.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\SFML-2.3.2\lib" "sfml-graphics-d.lib" "sfml-window-d.lib" "sfml-system-d.lib" "sfml-audio-d.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Alex\Documents\Visual Studio 2013\Projects\kursProjectSFML\Debug\kursProjectSFML.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Alex\Documents\Visual Studio 2013\Projects\kursProjectSFML\Debug\kursProjectSFML.lib" /MACHINE:X86 Debug\Kub.obj
+         Debug\level.obj
+         Debug\main.obj
          Debug\Menu.obj
          Debug\tinystr.obj
          Debug\tinyxml.obj
          Debug\tinyxmlerror.obj
          Debug\tinyxmlparser.obj
+         Debug\view.obj
          kursProjectSFML.vcxproj -> C:\Users\Alex\Documents\Visual Studio 2013\Projects\kursProjectSFML\Debug\kursProjectSFML.exe
      1>Сборка проекта "C:\Users\Alex\Documents\Visual Studio 2013\Projects\kursProjectSFML\kursProjectSFML\kursProjectSFML.vcxproj" завершена (целевые объекты Build).
 
 Сборка успешно завершена.
 
-Затраченное время: 00:00:03.62
+Затраченное время: 00:00:04.72

@@ -17,7 +17,6 @@ public:
 
 private:
 	int selectedItemIndex;
-	//sf::Font font;
 	sf::Image image[MAX_NUMBER_OF_ITEMS];
 	sf::Texture texture[MAX_NUMBER_OF_ITEMS];
 	sf::Sprite sprite[MAX_NUMBER_OF_ITEMS];

@@ -1,10 +1,15 @@
-#include <SFML\Graphics.hpp>
-#include <iostream>
-#include <sstream>
+//#include <SFML\Graphics.hpp>
+//#include <iostream>
+//#include <sstream>
 #include "Menu.h"
+//#include "Kub.h"
+#include "PlayWindow.h"
 
 void main()
 {
+	HWND hWnd = GetConsoleWindow();
+	ShowWindow(hWnd, SW_HIDE);
+
 	sf::Font font;
 	font.loadFromFile("neuropol_x.ttf");
 	sf::Text text("", font, 40);
@@ -38,6 +43,7 @@ void main()
 					switch (menu.GetPressedItem())
 					{
 					case 0: 
+						CreatePlayWindow();
 						break;
 					case 1:
 						break;
@@ -201,10 +207,10 @@ public:
 	FloatRect getRect(){
 		return FloatRect(x, y, w, h);
 	}
-};
+};*/
 
 
-int main()
+/*int main()
 {
 	//HWND hWnd = GetConsoleWindow();
 	//ShowWindow(hWnd, SW_HIDE);
