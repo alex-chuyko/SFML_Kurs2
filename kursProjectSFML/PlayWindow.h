@@ -8,6 +8,11 @@
 //#include <Windows.h>
 #include "Kub.h"
 
+namespace
+{
+	sf::RenderWindow window(sf::VideoMode(700, 600), "Impossible Game", sf::Style::Close);
+}
+
 void CreatePlayWindow(sf::RenderWindow &menuWindow)
 {
 	HWND hWnd = GetConsoleWindow();
@@ -23,8 +28,15 @@ void CreatePlayWindow(sf::RenderWindow &menuWindow)
 	Text text("", font, 30);
 	text.setColor(Color::White);
 	text.setStyle(sf::Text::Bold);
-
-	sf::RenderWindow window(sf::VideoMode(700, 600), "Impossible Game", sf::Style::Close); //800 640
+	Text textLvl("", font, 15);
+	textLvl.setColor(Color::White);
+	textLvl.setStyle(sf::Text::Bold);
+ 
+	if (!window.isOpen())
+		window.create(sf::VideoMode(700, 600), "Impossible Game", sf::Style::Close);
+		//sf::RenderWindow window(sf::VideoMode(700, 600), "Impossible Game", sf::Style::Close); //800 640
+	else
+		window.setVisible(true);
 	view.reset(sf::FloatRect(0, 0, 700, 600));
 
 	Texture t;
@@ -36,7 +48,7 @@ void CreatePlayWindow(sf::RenderWindow &menuWindow)
 
 	Object player = lvl.GetObj("player");
 	Object finish = lvl.GetObj("finish");
-	Kub k("kub.jpg", lvl, player.rect.left, player.rect.top, 32, 32);
+	Kub kub("kub.jpg", lvl, player.rect.left, player.rect.top, 32, 32);
 
 	Clock clock;
 
@@ -54,13 +66,14 @@ void CreatePlayWindow(sf::RenderWindow &menuWindow)
 			if (event.type == sf::Event::Closed)
 			{
 				menuWindow.setVisible(true);
+				//window.setVisible(false);
 				window.close();
 			}
 		}
 
-		finish = k.checkFinish(player, finish, lvl, window, menuWindow);
-		float x = k.getplayercoordinateX(); 
-		float y = k.getplayercoordinateY();
+		finish = kub.checkFinish(player, finish, lvl, window, menuWindow);
+		float x = kub.getplayercoordinateX();
+		float y = kub.getplayercoordinateY();
 		float tempX = x; float tempY = y;
 		if (y > 300) tempY = 400;
 		else
@@ -71,7 +84,8 @@ void CreatePlayWindow(sf::RenderWindow &menuWindow)
 		view.setCenter(tempX, tempY);
 		window.setView(view);
 		text.setPosition(view.getCenter().x - 80, view.getCenter().y - 280);
-		k.draw(window, lvl, text, background, time);
+		textLvl.setPosition(view.getCenter().x - 340, view.getCenter().y - 300);
+		kub.draw(window, lvl, text, background, time, textLvl);
 
 	}
 }

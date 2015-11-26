@@ -22,7 +22,7 @@ public:
 	void checkCollision(float Dx, float Dy);
 	FloatRect getRect();
 	Object checkFinish(Object player, Object finish, Level &lvl, sf::RenderWindow &window, sf::RenderWindow &windowMenu);
-	void draw(RenderWindow &window, Level &lvl, Text text, Sprite background, float time);
+	void draw(RenderWindow &window, Level &lvl, Text text, Sprite background, float time, Text textLvl);
 
 private:
 	float x, y = 0;

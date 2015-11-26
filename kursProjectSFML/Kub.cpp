@@ -1,4 +1,5 @@
 #include "Kub.h"
+#include "Menu.h"
 
 
 Kub::Kub(String F, Level &lev, float X, float Y, float W, float H)
@@ -37,6 +38,7 @@ void Kub::update(float time)
 	if (!life)
 	{
 		playerDeath++;
+		//Sleep(100);
 		life = true;
 	}
 	y += dy*time;
@@ -72,33 +74,32 @@ void Kub::control(float time)
 	}
 	/*if (Keyboard::isKeyPressed(Keyboard::Escape))
 	{
-		sf::RenderWindow window(sf::VideoMode(300, 300), "Pause", sf::Style::None);
+		sf::RenderWindow windowPause(sf::VideoMode(300, 300), "Pause", sf::Style::Close);
+		bool flag = true;
+		float tempDx = dx, tempDy = dy, tempX = x, tempY = y;
 
-		while (window.isOpen())
+		while (windowPause.isOpen())
 		{
-		sf::Event event;
-		while (window.pollEvent(event))
-		{
-		switch (event.type)
-		{
-		case sf::Event::KeyReleased:
-		switch (event.key.code)
-		{
-		case sf::Keyboard::Escape:
-		window.close();
-		break;
-		}
-		break;
-
-		case sf::Event::Closed:
-		window.close();
-		break;
-		}
-		}
-
-		dx = 0;
-		dy = 0;
-		music.pause();
+			dx = 0;
+			dy = 0;
+			music.pause();
+			sf::Event event;
+			while (windowPause.pollEvent(event))
+			{
+				switch (event.type)
+				{
+					case sf::Event::Closed:
+					{
+						dy = tempDy;
+						dx = tempDx;
+						y = tempY;
+						x = tempX;
+						music.play();
+						windowPause.close();
+					}
+					break;
+				}
+			}			
 		}
 	}*/
 }
@@ -144,6 +145,7 @@ void Kub::checkCollision(float Dx, float Dy)
 					{
 						upDown *= -1;
 						x = 512; y = 416;
+						
 					}
 
 				}
@@ -161,6 +163,7 @@ Object Kub::checkFinish(Object player, Object finish, Level &lvl, sf::RenderWind
 	String levelFile, musicFile;
 	if (x > finish.rect.left)
 	{
+		//Sleep(100);
 		levelNum++;
 		if (levelNum < 3)
 		{
@@ -190,22 +193,27 @@ Object Kub::checkFinish(Object player, Object finish, Level &lvl, sf::RenderWind
 	return finish;
 }
 
-void Kub::draw(RenderWindow &window, Level &lvl, Text text, Sprite background, float time)
+void Kub::draw(RenderWindow &window, Level &lvl, Text text, Sprite background, float time, Text textLvl)
 {
+
+
 	window.draw(sprite);
 	lvl.Draw(window);
 	window.display();
 
 	//getplayercoordinateforview(getplayercoordinateX(), getplayercoordinateY());
-	update(time);
 	window.draw(sprite);
+	update(time);
 	//window.setView(view);
 	window.clear();
 	window.draw(background);
 
-	std::ostringstream playerScoreString;
+	std::ostringstream playerScoreString, levelNumString;
+	levelNumString << levelNum;
 	playerScoreString << playerDeath;
 	text.setString("Attempt " + playerScoreString.str());
+	textLvl.setString("Level " + levelNumString.str());
 	window.draw(text);
+	window.draw(textLvl);
 }
 

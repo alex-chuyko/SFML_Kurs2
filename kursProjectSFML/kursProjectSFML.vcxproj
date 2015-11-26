@@ -96,9 +96,17 @@
     <ClInclude Include="level.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="PlayWindow.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="resource1.h" />
     <ClInclude Include="TinyXML\tinystr.h" />
     <ClInclude Include="TinyXML\tinyxml.h" />
     <ClInclude Include="view.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="kursProjectSFML.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resource\emblem-games.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

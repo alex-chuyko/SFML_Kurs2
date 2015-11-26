@@ -10,27 +10,33 @@ void main()
 	HWND hWnd = GetConsoleWindow();
 	ShowWindow(hWnd, SW_HIDE);
 
+	
+
+	window.setVisible(false);
+
 	sf::Font font;
 	font.loadFromFile("akashi.ttf");
 	sf::Text text("", font, 50);
 	text.setColor(sf::Color::White);
 	text.setStyle(sf::Text::Bold);
 
-	sf::RenderWindow window(sf::VideoMode(600, 600), "Impossible Game", sf::Style::Close); //800 640
+	sf::RenderWindow windowMenu(sf::VideoMode(600, 600), "Impossible Game", sf::Style::Close); //800 640
 
 
-	Menu menu(window.getSize().x, window.getSize().y, "images/btn", 3);
+	Menu menu(windowMenu.getSize().x, windowMenu.getSize().y, "images/btn", 3);
 
-	while (window.isOpen())
+	while (windowMenu.isOpen())
 	{
 		sf::Event event;
-		while (window.pollEvent(event))
+		while (windowMenu.pollEvent(event))
 		{
 			switch(event.type)
 			{
 			case sf::Event::KeyReleased:
 				switch (event.key.code)
 				{
+				break;
+
 				case sf::Keyboard::Up:
 					menu.MoveUp();
 					break;
@@ -43,7 +49,7 @@ void main()
 					switch (menu.GetPressedItem())
 					{
 					case 0: 
-						CreatePlayWindow(window);
+						CreatePlayWindow(windowMenu);
 						break;
 					case 1:
 					{
@@ -60,7 +66,7 @@ void main()
 						sf::RenderWindow helpWindow(sf::VideoMode(500, 500), "Impossible Game", sf::Style::None);
 						while (helpWindow.isOpen())
 						{
-							window.setVisible(false);
+							windowMenu.setVisible(false);
 							sf::Event eventHelp;
 							while (helpWindow.pollEvent(eventHelp))
 							{
@@ -68,7 +74,7 @@ void main()
 								if ((eventHelp.type == sf::Event::Closed) || (eventHelp.key.code == sf::Keyboard::Escape))
 								{
 									helpWindow.close();
-									window.setVisible(true);
+									windowMenu.setVisible(true);
 								}
 							}
 
@@ -97,7 +103,7 @@ void main()
 					}
 						break;
 					case 2:
-						window.close();
+						windowMenu.close();
 						break;
 					}
 					break;
@@ -105,24 +111,24 @@ void main()
 				break;
 
 			case sf::Event::Closed:
-				window.close();
+				windowMenu.close();
 
 				break;
 			}
 		}
 
-		window.clear();
-		menu.draw(window, 3);
+		windowMenu.clear();
+		menu.draw(windowMenu, 3);
 
 		text.setCharacterSize(50);
-		text.setString("My Game");
-		text.setPosition(window.getSize().x - 420, 0);
-		window.draw(text);
-		/*text.setCharacterSize(15);
+		text.setString("Impossible Game");
+		text.setPosition(windowMenu.getSize().x - 520, 0);
+		windowMenu.draw(text);
+		text.setCharacterSize(15);
 		text.setString("Created by Alex");
 		text.setPosition(10, window.getSize().y - 30);
-		window.draw(text);*/
+		windowMenu.draw(text);
 
-		window.display();
+		windowMenu.display();
 	}
 }
