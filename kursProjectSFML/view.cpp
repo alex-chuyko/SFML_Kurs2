@@ -8,6 +8,6 @@ void getplayercoordinateforview(float x, float y)
 		if (y < 500) tempY = 400;
 	if (x < 300) tempX = 400;
 	else
-		if (x > 2500) tempX = 2500;
+		if (x > 2000) tempX = 2000;
 	view.setCenter(tempX, tempY);
 }

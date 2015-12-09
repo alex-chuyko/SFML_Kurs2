@@ -38,16 +38,12 @@ void Kub::update(float time)
 	if (!life)
 	{
 		playerDeath++;
-		//Sleep(100);
 		life = true;
 	}
 	y += dy*time;
 	sprite.setPosition(x, y);
 	if (!onGround)
 	{
-		//sprite.setOrigin(w / 2, h / 2);
-		//sprite.rotate(0.5*time);
-		//sprite.setOrigin(0, 0);
 		dy = dy + 0.0028*time* upDown;
 	}
 	onGround = false;
@@ -72,36 +68,6 @@ void Kub::control(float time)
 		dx = 0.22;
 		onGround = false;
 	}
-	/*if (Keyboard::isKeyPressed(Keyboard::Escape))
-	{
-		sf::RenderWindow windowPause(sf::VideoMode(300, 300), "Pause", sf::Style::Close);
-		bool flag = true;
-		float tempDx = dx, tempDy = dy, tempX = x, tempY = y;
-
-		while (windowPause.isOpen())
-		{
-			dx = 0;
-			dy = 0;
-			music.pause();
-			sf::Event event;
-			while (windowPause.pollEvent(event))
-			{
-				switch (event.type)
-				{
-					case sf::Event::Closed:
-					{
-						dy = tempDy;
-						dx = tempDx;
-						y = tempY;
-						x = tempX;
-						music.play();
-						windowPause.close();
-					}
-					break;
-				}
-			}			
-		}
-	}*/
 }
 
 void Kub::checkCollision(float Dx, float Dy)
@@ -117,7 +83,6 @@ void Kub::checkCollision(float Dx, float Dy)
 					dy = 0; 
 					onGround = true; 
 				}
-				//if ((Dy * upDown) < 0) { y = obj[i].rect.top + obj[i].rect.height; dy = 0; onGround = false; }
 				if (Dx > 0) 
 				{ 
 					x = obj[i].rect.left - w; 
@@ -163,7 +128,6 @@ Object Kub::checkFinish(Object player, Object finish, Level &lvl, sf::RenderWind
 	String levelFile, musicFile;
 	if (x > finish.rect.left)
 	{
-		//Sleep(100);
 		levelNum++;
 		if (levelNum < 3)
 		{
@@ -195,16 +159,12 @@ Object Kub::checkFinish(Object player, Object finish, Level &lvl, sf::RenderWind
 
 void Kub::draw(RenderWindow &window, Level &lvl, Text text, Sprite background, float time, Text textLvl)
 {
-
-
 	window.draw(sprite);
 	lvl.Draw(window);
 	window.display();
 
-	//getplayercoordinateforview(getplayercoordinateX(), getplayercoordinateY());
 	window.draw(sprite);
 	update(time);
-	//window.setView(view);
 	window.clear();
 	window.draw(background);
 

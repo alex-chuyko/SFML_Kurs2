@@ -1,11 +1,3 @@
-//#include <SFML/Graphics.hpp>
-//#include <SFML/Audio.hpp>
-//#include <iostream>
-//#include "view.h"
-//#include "level.h"
-//#include <vector>
-//#include <sstream>
-//#include <Windows.h>
 #include "Kub.h"
 
 namespace
@@ -28,13 +20,12 @@ void CreatePlayWindow(sf::RenderWindow &menuWindow)
 	Text text("", font, 30);
 	text.setColor(Color::White);
 	text.setStyle(sf::Text::Bold);
-	Text textLvl("", font, 15);
+	Text textLvl("", font, 30);
 	textLvl.setColor(Color::White);
 	textLvl.setStyle(sf::Text::Bold);
  
 	if (!window.isOpen())
 		window.create(sf::VideoMode(700, 600), "Impossible Game", sf::Style::Close);
-		//sf::RenderWindow window(sf::VideoMode(700, 600), "Impossible Game", sf::Style::Close); //800 640
 	else
 		window.setVisible(true);
 	view.reset(sf::FloatRect(0, 0, 700, 600));
@@ -66,7 +57,6 @@ void CreatePlayWindow(sf::RenderWindow &menuWindow)
 			if (event.type == sf::Event::Closed)
 			{
 				menuWindow.setVisible(true);
-				//window.setVisible(false);
 				window.close();
 			}
 		}
@@ -80,11 +70,11 @@ void CreatePlayWindow(sf::RenderWindow &menuWindow)
 			if (y < 500) tempY = 400;
 		if (x < 400) tempX = 400;
 		else
-			if (x > 2500) tempX = 2500;
+			if (x > 2700) tempX = 2700;
 		view.setCenter(tempX, tempY);
 		window.setView(view);
 		text.setPosition(view.getCenter().x - 80, view.getCenter().y - 280);
-		textLvl.setPosition(view.getCenter().x - 340, view.getCenter().y - 300);
+		textLvl.setPosition(view.getCenter().x - 60, view.getCenter().y + 250);
 		kub.draw(window, lvl, text, background, time, textLvl);
 
 	}

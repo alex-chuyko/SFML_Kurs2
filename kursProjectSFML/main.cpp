@@ -1,16 +1,10 @@
-//#include <SFML\Graphics.hpp>
-//#include <iostream>
-//#include <sstream>
 #include "Menu.h"
-//#include "Kub.h"
 #include "PlayWindow.h"
 
 void main()
 {
 	HWND hWnd = GetConsoleWindow();
 	ShowWindow(hWnd, SW_HIDE);
-
-	
 
 	window.setVisible(false);
 
